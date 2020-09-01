@@ -1,0 +1,17 @@
+.docs-result {
+  width: 50%;
+  margin-right: 20px;
+  
+  .doc-list {
+    height: calc(100% - 56px);
+  }
+}
+
+.doc-preview {
+  width: 50%;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}

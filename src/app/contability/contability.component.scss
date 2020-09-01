@@ -1,0 +1,26 @@
+.search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  > :nth-child(1), :nth-child(3) {
+    margin-left: auto;
+  }
+}
+
+.contability-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 96px);
+  justify-content: center;
+}
+
+.contability-charts {
+  height: 50%;
+  width: 100%;
+}
+
+.contability-results {
+  height: 50%;
+  overflow-y: auto ;
+}

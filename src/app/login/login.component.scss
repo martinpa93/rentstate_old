@@ -1,0 +1,19 @@
+@import '../../variables';
+
+.login-card {
+  max-width: 400px;
+  max-height: 500px;
+  position: absolute;
+  top: 10%;
+  right:0;
+  left:0;
+  margin: auto;
+}
+
+.login-header-image {
+  background-size: cover;
+}
+
+.selected-user {
+  background-color: $sC;
+}

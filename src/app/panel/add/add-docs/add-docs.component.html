@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Añadir documento/s</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Para:</mat-label>
+    <mat-select required>
+      <mat-option>Propiedad</mat-option>
+      <mat-option>Inquilino</mat-option>
+      <mat-option>Contrato</mat-option>
+      <mat-option>Ingreso</mat-option>
+      <mat-option>Gasto</mat-option>
+    </mat-select>
+  </mat-form-field>
+    <mat-card>
+      <mat-card-content>
+        <div class="c-c">
+          <button mat-mini-fab color="primary" onclick="document.getElementById('addFile').click()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <input type= "file" multiple=true id="addFile" (change)="changeFiles($event.target.files)">
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-list class="full-list">
+      <mat-list-item>
+      </mat-list-item>
+    </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+</mat-dialog-actions>

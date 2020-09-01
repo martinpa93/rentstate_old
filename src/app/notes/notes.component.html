@@ -1,0 +1,102 @@
+<div class="content-outlet">
+  <div class="c-c">
+    <div class="filter-notes">
+      <button mat-icon-button color="primary">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+    <div class="order-notes">
+      <button mat-icon-button color="primary">
+        <mat-icon>reorder</mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="c-master-detail">
+    <div class="notes-result">
+     <mat-list class="full-list note-list">
+       <div mat-header>Notas</div>
+       <mat-list-item *ngFor="let note of notes" (click)="changeNote(note)" [ngClass]="{'note-selected': note?.id === selectedNote?.id}">
+         <mat-icon *ngIf="note?.propertyId" mat-list-icon>house</mat-icon>
+         <mat-icon *ngIf="note?.contractId" mat-list-icon>shop</mat-icon>
+         <div mat-line class="note-date">{{ note.date }}</div>
+         <div mat-line class="note-title">Título: {{ note?.title }}</div>
+         <div>
+           <button mat-icon-button [matMenuTriggerFor]="menu">
+             <mat-icon>more_vert</mat-icon>
+           </button>
+           <mat-menu #menu="matMenu">
+             <button mat-menu-item [routerLink]="['n', note.id]">
+               <span>Editar</span>
+             </button>
+             <button mat-menu-item disabled>
+               <span>Borrar</span>
+             </button>
+           </mat-menu>
+         </div>
+         <mat-divider></mat-divider>
+       </mat-list-item>
+     </mat-list>
+     <mat-paginator 
+       class="notes-paginator"
+       [length]="100"
+       [pageSize]="10"
+       [pageSizeOptions]="[5, 10, 25, 100]">
+     </mat-paginator>
+   </div>
+   <div class="note-detail">  
+     <mat-card class="card-detail">
+       <mat-card-header>
+        <mat-card-title>
+          <span *ngIf="!selectedNote">No hay una nota seleccionada</span>
+          <span *ngIf="selectedNote && selectedNote?.date">{{ selectedNote.date }}</span>
+        </mat-card-title>
+       </mat-card-header>
+       <mat-card-content>
+        <div *ngIf="selectedNote?.propertyId" class="card-label">
+          <span style="font-weight: 800;">Propiedad:</span>
+          <span></span>
+        </div>
+        <div *ngIf="selectedNote?.contractId" class="card-label">
+          <span style="font-weight: 800;">Contrato:</span>
+          <span></span>
+        </div>
+        <div *ngIf="selectedNote?.title" class="card-label">
+          <span style="font-weight: 800;">Título:</span>
+          <span>{{ selectedNote.title }}</span>
+        </div>
+        <div *ngIf="selectedNote?.description" class="card-label">
+          <span style="font-weight: 800;">Descripción:</span>
+          <span>{{ selectedNote.description }}</span>
+        </div>
+       </mat-card-content>
+     </mat-card>
+   </div>
+  </div>
+</div>
+
+
+<!-- <mat-icon style="padding-top: 10px;">filter_list</mat-icon>
+    <mat-form-field class="example-full-width">
+      <mat-label>Título</mat-label>
+      <input matInput placeholder="Ej. Cambio calentador">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="start" placeholder="Inicio">
+        <input matEndDate [(ngModel)]="end" placeholder="Fin">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select>
+        <mat-option value="all">Todos</mat-option>
+        <mat-option value="properties">Propiedades</mat-option>
+        <mat-option value="contracts">Contratos</mat-option>
+      </mat-select>
+    </mat-form-field> -->

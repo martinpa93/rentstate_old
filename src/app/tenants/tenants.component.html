@@ -1,0 +1,69 @@
+<div class="content-outlet">
+
+  <div class="c-c">
+    <button mat-icon-button color="primary">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button mat-icon-button color="primary">
+      <mat-icon>reorder</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-list class="full-list">
+    <div mat-subheader>Inquilinos</div>
+
+    <mat-list-item *ngFor="let tenant of tenants">
+
+      <mat-icon *ngIf="tenant?.type === 'company'" mat-list-icon>business</mat-icon>
+      <mat-icon *ngIf="tenant?.type === 'private'" mat-list-icon>person</mat-icon>
+
+      <div mat-line style="font-weight: 800;"><span class="tenant-status"></span>{{ tenant?.name }}</div>
+      <div mat-line style="font-weight: 800;"><span class="tenant-status"></span>{{ tenant?.identity }}</div>
+      
+      <div mat-line class="c-sb items">
+        <div>
+          Contratos: {{ tenant?.nContracts }}
+        </div>
+        <div>
+          Documentos: {{ tenant?.nDocs }}
+        </div>
+      </div>
+
+      <div mat-line  class="c-sb items">
+        <div>
+          Ingresos: x | {{ tenant?.nOutgoings }} &euro;
+        </div>
+        <div>
+          Pendientes:  x | {{ tenant?.nPendingPayments }} &euro;
+        </div>
+      </div>
+
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item disabled>
+            <span>Borrar</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      <mat-divider></mat-divider>  
+      
+    </mat-list-item>
+  </mat-list>
+
+  <mat-paginator 
+  class="tenants-paginator"
+  [length]="100"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+
+</div>

@@ -1,0 +1,77 @@
+<div class="content-outlet">
+
+  <div class="c-c">
+    <button mat-icon-button color="primary">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button mat-icon-button color="primary">
+      <mat-icon>reorder</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-list class="full-list">
+    
+    <div mat-subheader>Contratos</div>
+    <mat-list-item *ngFor="let contract of contracts">
+      
+      <div mat-line class="c-sb">
+        <div class="date">{{ contract?.start }}</div>
+        <div class="line"></div>
+        <div>9 meses</div>
+        <div class="line"></div>
+        <div class="date">{{ contract?.end }} </div>
+      </div>
+
+      <div mat-line class="c-sb items">
+        <div>Propiedades: </div>
+        <div>Inquilino: </div>
+      </div>
+
+      <div mat-line class="c-sb items">
+        <div>
+          Documentos: {{ contract?.nDocs }}
+        </div>
+        <div>
+          Notas: {{ contract?.nNotes }}
+        </div>
+      </div>
+
+      <div mat-line class="c-sb items">
+        <div>
+          Ingresos: x | {{ contract?.nIncomes }}
+        </div>
+        <div>
+          Pendientes:  x | {{ contract?.nPendingPayments }}
+        </div>
+      </div>
+
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item disabled>
+            <span>Borrar</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      <mat-divider></mat-divider>  
+
+    </mat-list-item>
+  </mat-list>
+  
+  <mat-paginator 
+  class="contracts-paginator"
+  [length]="100"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+
+</div>
+

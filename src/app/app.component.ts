@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ElectronService } from './core/services';
+import { ElectronService } from './core/services/electron.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

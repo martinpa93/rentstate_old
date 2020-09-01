@@ -1,0 +1,34 @@
+@import '../../variables';
+
+.note-list {
+  height: calc(100% - 56px);
+}
+
+.note-date {
+  background: #D3D3D3;
+  padding: 8px!important;
+  border-radius: 10px;
+}
+
+.note-title {
+  padding: 5px!important;
+}
+
+.notes-result {
+  width: 50%;
+  margin-right: 20px;
+}
+.note-selected {
+  box-sizing: border-box;
+  border: 2px solid;
+  border-left: 20px solid $pC;
+}
+
+
+/////////////////// DETAIL
+
+.note-detail {
+  width: 50%;
+}
+
+

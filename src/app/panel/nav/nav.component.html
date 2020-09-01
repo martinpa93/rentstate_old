@@ -1,0 +1,46 @@
+<div class="side-nav">
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Añadir" matTooltipPosition="right" [matMenuTriggerFor]="menu">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-menu #menu="matMenu" xPosition="after">
+    <button mat-menu-item (click)="addProperty()">Propiedad</button>
+    <button mat-menu-item (click)="addTenant()">Inquilino</button>
+    <button mat-menu-item (click)="addContract()">Contrato</button>
+    <button mat-menu-item (click)="addIncome()">Ingreso</button>
+    <button mat-menu-item (click)="addOutgoing()">Gasto</button>
+    <button mat-menu-item (click)="addDocuments()">Documento</button>
+    <button mat-menu-item (click)="addNote()">Nota</button>
+  </mat-menu>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Propiedades" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 'p'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>house</mat-icon>
+    </button>
+  </div>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Inquilinos" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 't'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Contratos" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 'c'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>text_snippet</mat-icon>
+    </button>
+  </div>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Contabilidad" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 'cont'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>account_balance</mat-icon>
+    </button>
+  </div>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Documentos" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 'doc'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>cloud</mat-icon>
+    </button>
+  </div>
+  <div class="nav-section">
+    <button mat-icon-button color="primary" matTooltip="Notas" matTooltipPosition="right" [routerLink]="['.', {outlets: {app: 'notes'}}]" [routerLinkActive]="['is-active']">
+      <mat-icon>notes</mat-icon>
+    </button>
+  </div>
+</div>
