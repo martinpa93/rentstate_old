@@ -44,7 +44,7 @@ const createDB = (knex) => {
       doc.foreign('propertyId').references('id').inTable('properties').onDelete('cascade');
       doc.dateTime('date').notNullable();
       doc.string('name', 45).notNullable();
-      doc.string('path', 150).notNullable();
+      doc.integer('size').notNullable();
     }).then();
     knex.schema.createTable('property_notes', note => {
       note.increments();
@@ -75,7 +75,7 @@ const createDB = (knex) => {
       doc.foreign('tenantId').references('id').inTable('tenants').onDelete('cascade');
       doc.dateTime('date').notNullable();
       doc.string('name', 45).notNullable();
-      doc.string('path', 150).notNullable();
+      doc.integer('size').notNullable();
     }).then();
   });
   knex.schema.createTable('contracts', contract => {
@@ -93,7 +93,7 @@ const createDB = (knex) => {
       doc.foreign('contractId').references('id').inTable('contracts').onDelete('cascade');
       doc.dateTime('date').notNullable();
       doc.string('name', 45).notNullable();
-      doc.string('path', 150).notNullable();
+      doc.integer('size').notNullable();
     }).then();
     knex.schema.createTable('contract_notes', note => {
       note.increments();
@@ -135,7 +135,7 @@ const createDB = (knex) => {
       doc.foreign('incomeId').references('id').inTable('incomes').onDelete('cascade');
       doc.dateTime('date').notNullable();
       doc.string('name', 45).notNullable();
-      doc.string('path', 150).notNullable();
+      doc.integer('size').notNullable();
     }).then();
   });
   knex.schema.createTable('outgoings', outgoing => {
@@ -155,7 +155,7 @@ const createDB = (knex) => {
       doc.foreign('outgoingId').references('id').inTable('outgoings').onDelete('cascade');
       doc.dateTime('date').notNullable();
       doc.string('name', 45).notNullable();
-      doc.string('path', 150).notNullable();
+      doc.integer('size').notNullable();
     }).then();
   });
 /*   knex.schema.createTable('tasks', tasks => {

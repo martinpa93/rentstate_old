@@ -20,10 +20,12 @@ export class AddDocsComponent implements OnInit {
 
   changeFiles(files: FileList) {
     for (let index = 0; index < files.length; index++) {
-      const file: File = files[index];
+      const file: File = files[index];xer4
       const myReader: FileReader = new FileReader();
       myReader.onloadend = (e,) => {
         this.filesToUpload.push({
+          id: 1,
+          typeRel: 'contract',
           name: file.name,
           type: file.type,
           file: e.target.result,
