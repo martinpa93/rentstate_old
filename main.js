@@ -37,7 +37,7 @@ function createWindow () {
     minHeight: 600,
     autoHideMenuBar : true,
     //frame: false,
-    icon: "./dist/rentstate/assets/favicon.ico",
+    icon: "./assets/favicon.ico",
     //useContentSize: true,
     webPreferences: {
       nodeIntegration: true
@@ -45,7 +45,7 @@ function createWindow () {
   })
 
   // y carga el index.html de la aplicación.
-  win.loadFile(path.join(__dirname, './dist/rentstate/index.html'));
+  win.loadFile('../index.html');
 
   // Abre las herramientas de desarrollo (DevTools).
   win.webContents.openDevTools();

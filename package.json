@@ -1,5 +1,7 @@
 {
   "name": "rentstate",
+  "author": "Martín Palacios Albors",
+  "description": "Electron app for rental state",
   "version": "0.0.0",
   "main": "main.js",
   "scripts": {
@@ -11,6 +13,7 @@
     "e2e": "ng e2e",
     "ele": "electron .",
     "electron": "ng build && electron .",
+    "deploy": "ng build && electron-builder build",
     "postinstall": "install-app-deps"
   },
   "private": true,
@@ -57,9 +60,11 @@
     "typescript": "~4.0.2"
   },
   "build": {
+    "productName": "Rentstate",
     "afterPack": "./main/afterPack.js",
     "win": {
       "target": "zip",
+      "icon": "./src/assets/favicon.ico",
       "asarUnpack": [
         "**/*.node"
       ]
@@ -69,7 +74,6 @@
         "from": "./dist/rentstate/",
         "to": "./"
       }
-    ],
-    "icon": "./resources/assets/favicon.ico"
+    ]
   }
 }
