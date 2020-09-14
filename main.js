@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const pathdb = `${__dirname}/data.db`;
+const pathdb = `./data.db`;
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
