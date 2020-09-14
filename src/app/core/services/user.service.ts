@@ -3,13 +3,14 @@ import { ElectronService } from './electron.service';
 import { User } from '../models/user';
 import { Subject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { users } from 'src/assets/mocks/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user: User;
+  user: User = users[0];
   _users = new Subject();
   $users = this._users.asObservable();
 

@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Console } from 'console';
 import { FilesService } from 'src/app/core/services/files.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-docs',
   templateUrl: './add-docs.component.html',
   styleUrls: ['./add-docs.component.scss']
 })
-export class AddDocsComponent implements OnInit {
+export class AddDocsComponent implements OnInit, OnDestroy {
 
   filesToUpload = [];
+  suscriptions: Subscription = new Subscription();
 
   constructor(
     private fileS: FilesService
@@ -20,11 +22,11 @@ export class AddDocsComponent implements OnInit {
 
   changeFiles(files: FileList) {
     for (let index = 0; index < files.length; index++) {
-      const file: File = files[index];xer4
+      const file: File = files[index];
       const myReader: FileReader = new FileReader();
       myReader.onloadend = (e,) => {
         this.filesToUpload.push({
-          id: 1,
+          relId: 1,
           typeRel: 'contract',
           name: file.name,
           type: file.type,
@@ -33,13 +35,14 @@ export class AddDocsComponent implements OnInit {
           size: e.total, 
           loaded: e.loaded
         });
-        console.log(this.filesToUpload);
-        this.fileS.uploadFiles(this.filesToUpload);
+        this.suscriptions.add(this.fileS.uploadFiles(this.filesToUpload).subscribe((res) => { console.log(res) }));
         //myReader.result is a String of the uploaded file
-        
       }
       myReader.readAsDataURL(file);
     }
   }
 
+  ngOnDestroy(): void {
+    this.suscriptions.unsubscribe();
+  }
 }

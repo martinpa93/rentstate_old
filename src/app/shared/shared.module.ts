@@ -18,6 +18,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { getSpaPaginatorIntl } from './spa-paginator-intl';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
     MatTooltipModule,
     MatMenuModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     MatDatepickerModule,
@@ -63,7 +65,8 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
     MatTooltipModule,
     MatMenuModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule { }

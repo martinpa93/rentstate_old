@@ -21,7 +21,8 @@ const createDB = (knex) => {
       city: 'Valencia',
       cp: '46018',
       email: 'martinpa_93@hotmail.com',
-      phone: '675543321'
+      phone: '675543321', 
+      iban: '122345566778789112212292929292992'
     }).then();
   });
   knex.schema.createTable('properties', property => {

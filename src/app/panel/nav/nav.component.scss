@@ -1,7 +1,6 @@
 @import '../../../variables';
 
 .side-nav {
-  width: 50px;
   height: 100%;
   position: fixed;
   z-index: 1; /* Stay on top */
@@ -10,17 +9,10 @@
   overflow-x: hidden; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background-color: aliceblue;
-  border: 2px solid #468CEC;
+  justify-content: space-evenly;
+  background-color: $blue-light;
+  border: 2px solid $pC;
   box-sizing: border-box;
-}
-
-.nav-section {
-  height: 64px;
-  button, mat-icon {
-    width: 50px;
-  }
 }
 
 .is-active{

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { Property } from 'src/app/core/models/property';
+import { PropertyService } from 'src/app/core/services/property.service';
 
 @Component({
   selector: 'app-add-property',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddPropertyComponent implements OnInit {
 
-  constructor() { }
+  property: Property = {type: 'house', country: 'españa', region: 'valencia', city: 'valencia'};
+
+  constructor(
+    private propertyS: PropertyService
+  ) { }
 
   ngOnInit(): void {
+
   }
 
+  onSubmit() {
+    this.propertyS.addProperty(this.property, false).pipe(first()).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

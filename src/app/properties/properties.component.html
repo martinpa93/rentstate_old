@@ -1,19 +1,38 @@
 <div class="content-outlet">
-
   <div class="c-c">
-    <button mat-icon-button color="primary">
+    <button mat-icon-button color="primary" (click)="openFilter()">
       <mat-icon>filter_list</mat-icon>
     </button>
-    <button mat-icon-button color="primary">
+    <mat-chip-list>
+      <mat-chip *ngIf="filter?.address" class="chip">{{ filter.address }}</mat-chip>
+      <mat-chip *ngIf="filter?.type">
+        <mat-icon *ngIf="filter?.type === 'house'" mat-list-icon>house</mat-icon>
+        <mat-icon *ngIf="filter?.type === 'commerce'" mat-list-icon>shop</mat-icon>
+        <mat-icon *ngIf="filter?.type === 'garage'" mat-list-icon>directions_car</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <button mat-icon-button color="primary" [matMenuTriggerFor]="menuOrder">
       <mat-icon>reorder</mat-icon>
     </button>
+    <mat-chip *ngIf="sort === 'active'" class="chip">Activos</mat-chip>
+    <mat-chip *ngIf="sort === 'type'" class="chip">Tipo</mat-chip>
+
+    <mat-menu #menuOrder="matMenu">
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort('active')">
+        <span>Activos</span>
+      </button>
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'type', 'sort-inactive': sort !== 'type' }" (click)="changeSort('type')">
+        <span>Tipo</span>
+      </button>
+    </mat-menu>
   </div>
   
   <mat-divider></mat-divider>
 
   <mat-list class="full-list">
+    <mat-spinner *ngIf="loadingR" class="spinner-p"></mat-spinner>
     <div mat-subheader>Propiedades</div>
-    <mat-list-item *ngFor="let property of properties">
+    <mat-list-item *ngFor="let property of propertiesPage">
 
       <mat-icon *ngIf="property?.type === 'house'" mat-list-icon>house</mat-icon>
       <mat-icon *ngIf="property?.type === 'commerce'" mat-list-icon>shop</mat-icon>
@@ -34,7 +53,7 @@
         </div>
       </div>
 
-      <div mat-line  class="c-sb items">
+      <div mat-line class="c-sb items">
         <div>
           Ingresos: x | {{ property?.nOutgoings }} &euro;
         </div>
@@ -66,9 +85,11 @@
 
   <mat-paginator 
     class="properties-paginator"
-    [length]="100"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 25, 100]">
+    [length]="properties?.length"
+    [pageIndex]="page?.pageIndex"
+    [pageSize]="page?.pageSize"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="changePage($event)">
   </mat-paginator>
 
 </div>

@@ -31,10 +31,12 @@ app.whenReady().then(createWindow);
 function createWindow () {
   // Crea la ventana del navegador.
   const win = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
+    minWidth: 900,
+    minHeight: 600,
     autoHideMenuBar : true,
-   // frame: false,
+    //frame: false,
     icon: "./dist/rentstate/assets/favicon.ico",
     //useContentSize: true,
     webPreferences: {
@@ -78,9 +80,15 @@ ipcMain.on('list-users', async(event) => {
 
 const properties = require('./main/property');
 
-ipcMain.on('list-properties', (event) => {
-  properties.listProperties(knex).then((res) => {
+ipcMain.on('list-properties', (event, args) => {
+  properties.listProperties(knex, args).then((res) => {
     event.sender.send('reply-list-properties',res);
+  });
+});
+
+ipcMain.on('add-property', (event, arg) => {
+  properties.addProperty(knex, arg).then((res) => {
+    event.sender.send('reply-add-property',res);
   });
 });
 

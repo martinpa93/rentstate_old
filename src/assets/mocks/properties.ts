@@ -1,6 +1,4 @@
-import { Property } from 'src/app/core/models/property';
-
-export const properties: Property[] = [
+export const properties = [
     {
       "id": 0,
       "address": "963 Seabring Street, \tLewis, Maryland, 5604",

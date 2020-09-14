@@ -1,68 +1,77 @@
 <h2 mat-dialog-title>Añadir propiedad</h2>
 <mat-dialog-content>
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>RF</mat-label>
-      <input matInput />
-    </mat-form-field>
+  <form (ngSubmit)="onSubmit()" #pForm="ngForm">
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>RF</mat-label>
+        <input matInput [(ngModel)]="property.catastralReference" name="catastralReference" #catastralReference="ngModel" required minlength="24" maxlength="24">
+        <mat-error *ngIf="catastralReference?.errors && catastralReference?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="catastralReference?.errors && !catastralReference?.errors?.required && catastralReference?.errors?.minlength || catastralReference?.errors?.maxlength">Debe contener 24 carácteres</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Dirección</mat-label>
-      <input matInput />
-    </mat-form-field>
+      <mat-form-field  appearance="fill">
+        <mat-label>Dirección</mat-label>
+        <input matInput [(ngModel)]="property.address" name="address" #address="ngModel" required/>
+        <mat-error *ngIf="address?.errors && address?.errors?.required">Requerido</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Tipo</mat-label>
-      <mat-select required>
-        <mat-option>Vivienda</mat-option>
-        <mat-option>Local comercial</mat-option>
-        <mat-option>Garage</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>País</mat-label>
-      <mat-select disabled required>
-        <mat-option>España</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo</mat-label>
+        <mat-select [(ngModel)]="property.type" name="type">
+          <mat-option value="house">Vivienda</mat-option>
+          <mat-option value="commerce">Local comercial</mat-option>
+          <mat-option value="garage">Garage</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Región</mat-label>
-      <mat-select disabled required>
-        <mat-option>Valencia</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>País</mat-label>
+        <mat-select [(ngModel)]="property.country" name="country" disabled>
+          <mat-option value="españa">España</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Región</mat-label>
+        <mat-select [(ngModel)]="property.region" name="region" disabled>
+          <mat-option value="valencia">Valencia</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Ciudad</mat-label><div class=""></div>
+        <mat-select [(ngModel)]="property.city" name="city" disabled>
+          <mat-option value="valencia">Valencia</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>CP</mat-label>
+        <input [(ngModel)]="property.cp" name="cp" #cp="ngModel" matInput required/>
+        <mat-error *ngIf="cp?.errors && cp?.errors?.required">Requerido</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Valor de adquisición</mat-label>
+        <input [(ngModel)]="property.adquisitionValue" name="adquisitionValue" #adquisitionValue="ngModel" matInput required/>
+        <mat-error *ngIf="adquisitionValue?.errors && adquisitionValue?.errors?.required">Requerido</mat-error>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Ciudad</mat-label>
-      <mat-select disabled required>
-        <mat-option>Valencia</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>CP</mat-label>
-      <input matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Valor de adquisición</mat-label>
-      <input matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Fecha de adquisición</mat-label>
-      <input matInput [matDatepicker]="picker" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de adquisición</mat-label>
+        <input [(ngModel)]="property.adquisitionDate" name="adquisitionDate" #adquisitionDate="ngModel" matInput [matDatepicker]="picker" required />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+  <button mat-button [disabled]="!pForm.form.valid" type="submit" (click)="onSubmit()" [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
 </mat-dialog-actions>

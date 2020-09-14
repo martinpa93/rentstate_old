@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { PropertiesComponent } from './properties.component';
 import { EditPropertyComponent } from './edit-property/edit-property.component';
+import { FilterPropertiesComponent } from './filter-properties/filter-properties.component';
 
 const routes: Routes = [
   { path: '', component: PropertiesComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   declarations: [
     PropertiesComponent,
     EditPropertyComponent,
+    FilterPropertiesComponent,
   ],
   imports: [
     CommonModule,

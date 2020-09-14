@@ -1,8 +1,8 @@
 export interface Note {
-  id: number;
+  id?: number;
   propertyId?: number;
   contractId?: number;
-  date: string;
-  title: string;
-  description: string;
+  date?: string;
+  title?: string;
+  description?: string;
 }

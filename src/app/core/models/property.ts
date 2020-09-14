@@ -1,28 +1,38 @@
 export interface Property {
-  id: number;
-  address: string;
-  type: string;
-  catastralReference: string;
-  country: string;
+  userId?: number;
+  id?: number;
+  address?: string;
+  type?: string;
+  catastralReference?: string;
+  country?: string;
   region?: string;
-  city: string;
-  cp: string;
-  adquisitionValue: number;
-  adquisitionDate: Date;
+  city?: string;
+  cp?: string;
+  adquisitionValue?: number;
+  adquisitionDate?: Date;
   avaliable?: boolean;
   nContracts?: number;
-  nIncomes?: number;
-  nOutgoings?: number;
-  nPendingPayments?: number;
+  incomes?: {
+    nIncomes?: number;
+    qIncomes?: number;
+  };
+  outgoings?: {
+    nOutgoings?: number;
+    qOutgoings?: number;
+  }
+  pending?: {
+    nPendingPayments?: number;
+    qPendingPayments?: number;
+  };
   nDocs?: number;
   nNotes?: number;
 }
 
 export interface PropertyDoc {
-  id: number;
-  propertyId: number;
-  date: string;
-  name: string;
-  path: string;
-  size: number;
+  id?: number;
+  propertyId?: number;
+  date?: string;
+  name?: string;
+  path?: string;
+  size?: number;
 }

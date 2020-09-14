@@ -25,7 +25,9 @@ export class NavComponent implements OnInit {
   }
 
   addProperty() {
-    const dialogRef = this.dialog.open(AddPropertyComponent);
+    const dialogRef = this.dialog.open(AddPropertyComponent, {
+      width: '900px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

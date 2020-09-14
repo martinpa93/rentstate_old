@@ -15,6 +15,7 @@ export class FilesService {
     private electron: ElectronService
   ) {
     this.electron.ipcRenderer.on('reply-upload-files', (event, arg) => {
+      console.log(arg);
       this._uploadFiles.next(arg);
     });
   }
