@@ -60,20 +60,18 @@
     "typescript": "~4.0.2"
   },
   "build": {
-    "productName": "Rentstate",
-    "afterPack": "./main/afterPack.js",
-    "win": {
-      "target": "zip",
-      "icon": "./src/assets/favicon.ico",
-      "asarUnpack": [
-        "**/*.node"
-      ]
-    },
+    "productName": "rentstate",
+    "appId": "com.rentstate.app",
+    "extraFiles": "./data.db",
     "extraResources": [
       {
-        "from": "./dist/rentstate/",
+        "from": "./dist/rentstate",
         "to": "./"
       }
-    ]
+    ],
+    "win": {
+      "target": "zip",
+      "icon": "./src/assets/favicon.ico"
+    }
   }
 }

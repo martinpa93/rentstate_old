@@ -1,23 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const fs = require('fs');
-const pathdb = `${__dirname}/data.db`;
+const pathdb = `./data.db`;
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
     filename: pathdb
-  },
-  useNullAsDefault: true
-});
-
-
-// Crear base de datos en caso de que no exista
-
-fs.access(pathdb, fs.constants.F_OK, (err) => {
-  if (err) {
-    console.log('DB NO EXISTS');
-    const db = require('./main/db');
-    db.createDB(knex);
   }
 });
 
