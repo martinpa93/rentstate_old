@@ -31,7 +31,7 @@ function createWindow () {
   })
 
   // y carga el index.html de la aplicación.
-  win.loadFile(path.join(__dirname, './dist/rentstate/index.html'));
+  win.loadFile('./dist/rentstate/index.html');
 
   // Abre las herramientas de desarrollo (DevTools).
   win.webContents.openDevTools();
