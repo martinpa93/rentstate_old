@@ -35,7 +35,9 @@ export class NavComponent implements OnInit {
   }
 
   addTenant() {
-    const dialogRef = this.dialog.open(AddTenantComponent);
+    const dialogRef = this.dialog.open(AddTenantComponent, {
+      width: '900px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -43,7 +45,9 @@ export class NavComponent implements OnInit {
   }
 
   addContract() {
-    const dialogRef = this.dialog.open(AddContractComponent);
+    const dialogRef = this.dialog.open(AddContractComponent, {
+      width: '900px',
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -66,7 +70,7 @@ export class NavComponent implements OnInit {
     });
   }
   addDocuments() {
-    const dialogRef = this.dialog.open(AddDocsComponent);
+    const dialogRef = this.dialog.open(AddDocsComponent, { width: '800px' });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -74,7 +78,7 @@ export class NavComponent implements OnInit {
   }
 
   addNote() {
-    const dialogRef = this.dialog.open(AddNoteComponent);
+    const dialogRef = this.dialog.open(AddNoteComponent, { width: '1000px' });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

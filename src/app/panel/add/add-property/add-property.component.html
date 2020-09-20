@@ -3,19 +3,6 @@
   <form (ngSubmit)="onSubmit()" #pForm="ngForm">
     <div class="c-sb">
       <mat-form-field appearance="fill">
-        <mat-label>RF</mat-label>
-        <input matInput [(ngModel)]="property.catastralReference" name="catastralReference" #catastralReference="ngModel" required minlength="24" maxlength="24">
-        <mat-error *ngIf="catastralReference?.errors && catastralReference?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="catastralReference?.errors && !catastralReference?.errors?.required && catastralReference?.errors?.minlength || catastralReference?.errors?.maxlength">Debe contener 24 carácteres</mat-error>
-      </mat-form-field>
-
-      <mat-form-field  appearance="fill">
-        <mat-label>Dirección</mat-label>
-        <input matInput [(ngModel)]="property.address" name="address" #address="ngModel" required/>
-        <mat-error *ngIf="address?.errors && address?.errors?.required">Requerido</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
         <mat-label>Tipo</mat-label>
         <mat-select [(ngModel)]="property.type" name="type">
           <mat-option value="house">Vivienda</mat-option>
@@ -23,8 +10,23 @@
           <mat-option value="garage">Garage</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>RF</mat-label>
+        <input matInput [(ngModel)]="property.catastralReference" name="catastralReference" #catastralReference="ngModel" required minlength="24" maxlength="24">
+        <mat-error *ngIf="catastralReference?.errors && catastralReference?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="catastralReference?.errors && !catastralReference?.errors?.required && catastralReference?.errors?.minlength || catastralReference?.errors?.maxlength">Debe contener 24 carácteres</mat-error>
+      </mat-form-field>
     </div>
 
+    <div>
+      <mat-form-field  appearance="fill" style="width: 100%;">
+        <mat-label>Dirección</mat-label> 
+        <input matInput [(ngModel)]="property.address" name="address" #address="ngModel" required/>
+        <mat-error *ngIf="address?.errors && address?.errors?.required">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+    
     <div class="c-sb">
       <mat-form-field appearance="fill">
         <mat-label>País</mat-label>
@@ -32,28 +34,15 @@
           <mat-option value="españa">España</mat-option>
         </mat-select>
       </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Región</mat-label>
-        <mat-select [(ngModel)]="property.region" name="region" disabled>
-          <mat-option value="valencia">Valencia</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Ciudad</mat-label><div class=""></div>
-        <mat-select [(ngModel)]="property.city" name="city" disabled>
-          <mat-option value="valencia">Valencia</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  
-    <div class="c-sb">
+   
       <mat-form-field appearance="fill">
         <mat-label>CP</mat-label>
         <input [(ngModel)]="property.cp" name="cp" #cp="ngModel" matInput required/>
         <mat-error *ngIf="cp?.errors && cp?.errors?.required">Requerido</mat-error>
       </mat-form-field>
+    </div>
+  
+    <div class="c-sb">
   
       <mat-form-field appearance="fill">
         <mat-label>Valor de adquisición</mat-label>

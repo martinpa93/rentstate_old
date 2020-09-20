@@ -1,4 +1,4 @@
-const listProperties = (knex, query) => {
+function listProperties(knex, query) {
   let response = knex('properties').where('userId', query.userId);
   
   if (query) {
@@ -20,7 +20,7 @@ const listProperties = (knex, query) => {
   return response;
 }
 
-const addProperty = async(knex, data) => {
+async function addProperty(knex, data) {
   const idProperty = await knex('properties').insert(data).catch((e) => { console.log(e); });;
   return knex('properties').where('id', idProperty);
 }

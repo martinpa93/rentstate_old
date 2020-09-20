@@ -1,31 +1,49 @@
 <h2 mat-dialog-title>Añadir contrato</h2>
 <mat-dialog-content>
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>Periodo del alquiler</mat-label>
-      <input matInput [matDatepicker]="picker" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
+  <form (ngSubmit)="onSubmit()" #cForm="ngForm">
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>Propiedades</mat-label>
+        <mat-select required name="properties" multiple (selectionChange)="changeProperties($event.value)">
+          <mat-option *ngFor="let property of properties" [value]="property.id">{{ property.address }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Inquilino</mat-label>
+        <mat-select required [(ngModel)]="contract.tenant" name="tenant">
+          <mat-option  *ngFor="let tenant of tenants" [value]="tenant.id">{{ tenant.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>Propiedades</mat-label>
-      <mat-select required>
-        <mat-option>Vivienda</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <label>Selecciona la propiedad predominante</label>
+      <mat-radio-group [(ngModel)]="contract.propertyId" name="propertyId" ngDefaultControl>
+        <mat-radio-button *ngFor="let prop of contract?.properties" [value]="prop.id">
+          {{ prop.address }}  <span style="font-weight: 500;">   RF: </span> {{ prop.catastralReference }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
     
-    <mat-form-field appearance="fill">
-      <mat-label>Inquilino</mat-label>
-      <mat-select required>
-        <mat-option>Valencia</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>Periodo del alquiler</mat-label>
+        <mat-date-range-input [rangePicker]="picker"  [dateFilter]="filterData">
+          <input matStartDate placeholder="Start date" [(ngModel)]="contract.start" name="start" required>
+          <input matEndDate placeholder="End date" [(ngModel)]="contract.end" name="end" required>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-checkbox [(ngModel)]="contract.directDebit" name="directDebit">
+        Domiciliación bancaria
+      </mat-checkbox> 
+    </div>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="!cForm.form.valid" type="submit" (click)="onSubmit()">Crear</button>
 </mat-dialog-actions>

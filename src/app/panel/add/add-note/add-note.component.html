@@ -1,35 +1,61 @@
 <h2 mat-dialog-title>Añadir nota</h2>
 <mat-dialog-content>
-  <div class="c-c">
+  <form (ngSubmit)="onSubmit()" #nForm="ngForm">
     <mat-form-field appearance="fill">
-      <mat-label>Día</mat-label>
-      <mat-select required>
-        <mat-option>Hoy</mat-option>
-        <mat-option>Otro día</mat-option>
+      <mat-label>Para</mat-label>
+      <mat-select required [(ngModel)]="note.typeRel" name="typeRel" (selectionChange)="changeTypeRel($event.value)">
+        <mat-option value="property">Propiedad</mat-option>
+        <mat-option value="tenant">Inquilino</mat-option>
+        <mat-option value="contract">Contrato</mat-option>
+        <mat-option value="income">Ingreso</mat-option>
+        <mat-option value="outgoing">Gasto</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="note.typeRel">
+      <mat-label>Para</mat-label>
+      <mat-select required [(ngModel)]="note.relId" name="relId" #relId="ngModel" *ngIf=" note.typeRel === 'property'">
+        <mat-option *ngFor="let item of listRel" [value]="item.id">{{ item.address }}</mat-option>
+      </mat-select>
+      <mat-select required [(ngModel)]="note.relId" name="relId" #relId="ngModel" *ngIf=" note.typeRel === 'tenant'">
+        <mat-option *ngFor="let item of listRel" [value]="item.id">{{ item.name }}</mat-option>
+      </mat-select>
+      <mat-select required [(ngModel)]="note.relId" name="relId" #relId="ngModel" *ngIf=" note.typeRel === 'contract'">
+        <mat-option *ngFor="let item of listRel" [value]="item.id">{{ item.propertyId }} - {{ item.tenantId }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
+      <mat-label>Día</mat-label>
+      <mat-select required [(ngModel)]="note.defaultDay" name="defaultDay" #defaultDay="ngModel">
+        <mat-option value="today">Hoy</mat-option>
+        <mat-option value="other">Otro día</mat-option>
+      </mat-select>
+      <mat-error *ngIf="defaultDay?.errors && defaultDay?.errors?.required">Requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="note.defaultDay === 'other'">
       <mat-label>Fecha</mat-label>
-      <input matInput [matDatepicker]="picker" />
+      <input matInput [matDatepicker]="picker"  [(ngModel)]="note.date" name="date" #date="ngModel"/>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div class="c-col">
-    <mat-form-field appearance="fill" style="">
-      <mat-label>Título</mat-label>
-      <input matInput />
+      <mat-error *ngIf="date?.errors && date?.errors?.required">Requerido</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Descripción</mat-label>
-      <textarea matInput></textarea>
-    </mat-form-field>
-  </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Título</mat-label>
+        <input matInput [(ngModel)]="note.title" name="title" #title="ngModel" required/>
+        <mat-error *ngIf="title?.errors && title?.errors?.required">Requerido</mat-error>
+      </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput [(ngModel)]="note.description" name="description" #description="ngModel" required></textarea>
+        <mat-error *ngIf="description?.errors && description?.errors?.required">Requerido</mat-error>
+      </mat-form-field>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="!nForm.form.valid"  type="submit" (click)="onSubmit()">Crear</button>
 </mat-dialog-actions>

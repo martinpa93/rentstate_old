@@ -1,12 +1,31 @@
 <div class="content-outlet">
 
   <div class="c-c">
-    <button mat-icon-button color="primary">
+    <button mat-icon-button color="primary" (click)="openFilter()">
       <mat-icon>filter_list</mat-icon>
     </button>
-    <button mat-icon-button color="primary">
+    <mat-chip-list>
+      <mat-chip *ngIf="filter?.name" class="chip">{{ filter.name }}</mat-chip>
+      <mat-chip *ngIf="filter?.address" class="chip">{{ filter.address }}</mat-chip>
+      <mat-chip *ngIf="filter?.type">
+        <mat-icon *ngIf="filter?.type === 'private'" mat-list-icon>person</mat-icon>
+        <mat-icon *ngIf="filter?.type === 'company'" mat-list-icon>business</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <button mat-icon-button color="primary" [matMenuTriggerFor]="menuOrder">
       <mat-icon>reorder</mat-icon>
     </button>
+    <mat-chip *ngIf="sort === 'active'" class="chip">Activos</mat-chip>
+    <mat-chip *ngIf="sort === 'type'" class="chip">Tipo</mat-chip>
+
+    <mat-menu #menuOrder="matMenu">
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort(filter, 'active')">
+        <span>Activos</span>
+      </button>
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'type', 'sort-inactive': sort !== 'type' }" (click)="changeSort(filter, 'type')">
+        <span>Tipo</span>
+      </button>
+    </mat-menu>
   </div>
 
   <mat-divider></mat-divider>
@@ -33,10 +52,10 @@
 
       <div mat-line  class="c-sb items">
         <div>
-          Ingresos: x | {{ tenant?.nOutgoings }} &euro;
+          Ingresos: {{ tenant?.payments?.nPayments }} | {{ tenant?.payments?.qPayments }} &euro;
         </div>
         <div>
-          Pendientes:  x | {{ tenant?.nPendingPayments }} &euro;
+          Pendientes:  {{ tenant?.pending?.nPendingPayments }} | {{ tenant?.pending?.qPendingPayments }} &euro;
         </div>
       </div>
 
@@ -60,10 +79,11 @@
   </mat-list>
 
   <mat-paginator 
-  class="tenants-paginator"
-  [length]="100"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 25, 100]">
+    [length]="tenants?.length"
+    [pageIndex]="page?.pageIndex"
+    [pageSize]="page?.pageSize"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="changePage($event)">
   </mat-paginator>
 
 </div>

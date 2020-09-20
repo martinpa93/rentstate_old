@@ -12,7 +12,6 @@ knex.schema.createTable('users', users => {
   users.string('dni', 9).unique().notNullable();
   users.string('name', 45).unique().notNullable();
   users.string('country', 50).notNullable();
-  users.string('city', 50).notNullable();
   users.string('address', 50).notNullable();
   users.string('email', 50).notNullable();
   users.string('cp', 5).notNullable();
@@ -25,7 +24,6 @@ knex.schema.createTable('users', users => {
     name: 'Martín Palacios Albors',
     address: 'C/Pintor Pizcual Capuz n9',
     country: 'Spain',
-    city: 'Valencia',
     cp: '46018',
     email: 'martinpa_93@hotmail.com',
     phone: '675543321', 
@@ -39,8 +37,6 @@ knex.schema.createTable('properties', property => {
   property.string('catastralReference', 20).unique();
   property.enu('type', ['house', 'garage', 'commerce']).notNullable();
   property.string('country', 45).notNullable();
-  property.string('region', 45).notNullable();
-  property.string('city', 45).notNullable();
   property.string('address', 45).notNullable();
   property.string('cp', 5).notNullable();
   property.decimal('adquisitionValue').notNullable();
@@ -51,8 +47,9 @@ knex.schema.createTable('properties', property => {
     doc.integer('propertyId').notNullable();
     doc.foreign('propertyId').references('id').inTable('properties').onDelete('cascade');
     doc.dateTime('date').notNullable();
-    doc.string('name', 45).notNullable();
+    doc.string('name', 100).notNullable();
     doc.integer('size').notNullable();
+    doc.unique(['propertyId', 'name']);
   }).then();
   knex.schema.createTable('property_notes', note => {
     note.increments();
@@ -61,21 +58,25 @@ knex.schema.createTable('properties', property => {
     note.dateTime('date').notNullable();
     note.string('title', 45).notNullable();
     note.string('description', 300).notNullable();
+    note.enu('type', ['low', 'mid', 'high']).notNullable();
   }).then();
 });
 knex.schema.createTable('tenants', tenant => {
   tenant.increments();
   tenant.integer('userId').notNullable();
   tenant.foreign('userId').references('id').inTable('users').onDelete('cascade');
-  tenant.string('identity', 9).notNullable().unique();
+  tenant.string('identity', 9).notNullable();
   tenant.enu('type', ['company', 'private']).notNullable();
+  tenant.integer('tenantId');
+  tenant.foreign('tenantId').references('id').inTable('tenants');
   tenant.string('name', 45).notNullable();
   tenant.string('address', 45).notNullable();
   tenant.string('country', 45).notNullable();
-  tenant.string('city', 45).notNullable();
+  tenant.string('cp', 5).notNullable();;
   tenant.string('phone', 9).notNullable();
   tenant.string('email', 45).notNullable();
   tenant.string('iban', 34);
+  tenant.unique(['userId', 'identity']);
 }).then(() => {
   knex.schema.createTable('tenant_docs', doc => {
     doc.increments();
@@ -84,6 +85,16 @@ knex.schema.createTable('tenants', tenant => {
     doc.dateTime('date').notNullable();
     doc.string('name', 45).notNullable();
     doc.integer('size').notNullable();
+    doc.unique(['tenantId', 'name']);
+  }).then();
+  knex.schema.createTable('tenant_notes', note => {
+    note.increments();
+    note.integer('tenantId').notNullable();
+    note.foreign('tenantId').references('id').inTable('tenants').onDelete('cascade');
+    note.dateTime('date').notNullable();
+    note.string('title', 45).notNullable();
+    note.string('description', 300).notNullable();
+    note.enu('type', ['low', 'mid', 'high']).notNullable();
   }).then();
 });
 knex.schema.createTable('contracts', contract => {
@@ -92,8 +103,11 @@ knex.schema.createTable('contracts', contract => {
   contract.foreign('userId').references('id').inTable('users').onDelete('cascade');
   contract.integer('tenantId');
   contract.foreign('tenantId').references('id').inTable('tenants').onDelete('cascade');
+  contract.integer('propertyId').notNullable();
+  contract.foreign('propertyId').references('id').inTable('properties').onDelete('cascade');
   contract.date('start').notNullable();
   contract.date('end').notNullable();
+  contract.boolean('directDebit').notNullable().defaultTo(false);
 }).then(() => {
   knex.schema.createTable('contract_docs', doc => {
     doc.increments();
@@ -102,6 +116,7 @@ knex.schema.createTable('contracts', contract => {
     doc.dateTime('date').notNullable();
     doc.string('name', 45).notNullable();
     doc.integer('size').notNullable();
+    doc.unique(['contractId', 'name']);
   }).then();
   knex.schema.createTable('contract_notes', note => {
     note.increments();
@@ -110,16 +125,29 @@ knex.schema.createTable('contracts', contract => {
     note.dateTime('date').notNullable();
     note.string('title', 45).notNullable();
     note.string('description', 300).notNullable();
+    note.enu('type', ['low', 'mid', 'high']).notNullable();
   }).then();
   knex.schema.createTable('properties_to_contract', pivot => {
     pivot.increments();
     pivot.integer('propertyId').notNullable();
-    pivot.foreign('propertyId').references('id').inTable('properties');
+    pivot.foreign('propertyId').references('id').inTable('properties').onDelete('cascade');
     pivot.integer('contractId').notNullable();
-    pivot.foreign('contractId').references('id').inTable('contracts');
+    pivot.foreign('contractId').references('id').inTable('contracts').onDelete('cascade');
   }).then();
+  knex.schema.createTable('direct_debit', dd => {
+    dd.increments();
+    dd.date();
+  }).then(() => {
+    knex.schema.createTable('direct_debit', dd => {
+      dd.increments();
+      dd.integer('propertyId').notNullable();
+      dd.foreign('propertyId').references('id').inTable('properties').onDelete('cascade');
+      dd.integer('contractId').notNullable();
+      dd.foreign('contractId').references('id').inTable('contracts').onDelete('cascade');
+    }).then();
+  });
 
-});0
+});
 knex.schema.createTable('incomes', income => {
   income.increments();
   income.integer('userId').notNullable();
@@ -134,8 +162,7 @@ knex.schema.createTable('incomes', income => {
   income.integer('ivaType').notNullable();
   income.integer('irpfType').notNullable();
   income.boolean('sended');
-  income.boolean('payed');
-  income.date('paid_expires');
+  income.boolean('payed').notNullable().defaultTo(false);
 }).then(() => {
   knex.schema.createTable('income_docs', doc => {
     doc.increments();
@@ -144,6 +171,7 @@ knex.schema.createTable('incomes', income => {
     doc.dateTime('date').notNullable();
     doc.string('name', 45).notNullable();
     doc.integer('size').notNullable();
+    doc.unique(['incomeId', 'name']);
   }).then();
 });
 knex.schema.createTable('outgoings', outgoing => {
@@ -164,20 +192,28 @@ knex.schema.createTable('outgoings', outgoing => {
     doc.dateTime('date').notNullable();
     doc.string('name', 45).notNullable();
     doc.integer('size').notNullable();
+    doc.unique(['outgoingId', 'name']);
   }).then();
 });
-/*   knex.schema.createTable('tasks', tasks => {
+  knex.schema.createTable('tasks', tasks => {
   tasks.increments();
   tasks.integer('userId');
   tasks.foreign('userId').references('id').inTable('users').onDelete('cascade');
   tasks.enu('frequency', ['diario', 'semanal', 'mensual', 'bimensual', 'trimestral', 'cuatrimestral', 'anual']).notNullable();
   tasks.date('frequency_start').notNullable();
   tasks.date('frequency_end').notNullable();
+  tasks.enu(['income', 'outgoing', 'directDebit']);
   tasks.integer('incomeId');
   tasks.foreign('incomeId').references('id').inTable('incomes').onDelete('cascade');
   tasks.integer('outgoingId');
   tasks.foreign('outgoingId').references('id').inTable('outgoings').onDelete('cascade');
-}).then(); */
+}).then(() => {
+  knex.schema.createTable('tasks_calendar', task => {
+    task.increments();
+    task.foreign('taskId').references('id').inTable('tasks').onDelete('cascade');
+    task.date('date');
+  }).then();
+});
 knex.schema.createTable('notifications', not => {
   not.increments();
   not.integer('userId');

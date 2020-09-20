@@ -38,7 +38,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
       this.changeData();
       this.loadingR = false;
     });
-    this.propertyS.addProperty(null, true).subscribe((res) => {
+    this.subscription.add(this.propertyS.addProperty(null, true).subscribe((res) => {
       this.loadingR = true;
       this.propertyS.listProperties(this.filter, this.sort).subscribe((res: Property[]) => {
         this.page.pageIndex = 0;
@@ -46,7 +46,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
         this.changeData();
         this.loadingR = false;
       });
-    });
+    }));
   }
 
   changePage(event) {
@@ -70,22 +70,22 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) { 
         this.filter = result;
-        this.filterData(this.filter);
+        this.filterData(this.filter, this.sort);
       }
     }); 
   }
 
-  filterData(filter) {
-    this.propertyS.listProperties(filter).subscribe((res: Property[]) => {
+  filterData(filter?, sort?) {
+    this.propertyS.listProperties(filter, sort).subscribe((res: Property[]) => {
       this.page.pageIndex = 0;
       this.properties = res;
       this.changeData();
     });
   }
 
-  changeSort(sort) {
+  changeSort(filter, sort) {
     this.sort = sort;
-    this.propertyS.listProperties(null, sort).subscribe((res: Property[]) => {
+    this.propertyS.listProperties(filter, sort).subscribe((res: Property[]) => {
       this.page.pageIndex = 0;
       this.properties = res;
       this.changeData();
@@ -93,6 +93,7 @@ export class PropertiesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

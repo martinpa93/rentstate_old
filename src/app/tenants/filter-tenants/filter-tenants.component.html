@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Filtros</h2>
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()">
+    <div class="c-col">
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="data.name" name="name" maxlength="30"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección</mat-label>
+        <input matInput [(ngModel)]="data.address" name="address" maxlength="30"/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo</mat-label>
+        <mat-select [(ngModel)]="data.type" name="type">
+          <mat-option value="private">Particular</mat-option>
+          <mat-option value="company">Empresa</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="submit" (click)="onReset()" color="accent">Reset</button>
+  <button mat-button type="submit" (click)="onSubmit()" [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
+</mat-dialog-actions>

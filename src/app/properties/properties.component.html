@@ -18,10 +18,10 @@
     <mat-chip *ngIf="sort === 'type'" class="chip">Tipo</mat-chip>
 
     <mat-menu #menuOrder="matMenu">
-      <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort('active')">
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort(filter, 'active')">
         <span>Activos</span>
       </button>
-      <button mat-menu-item [ngClass]="{'sort-active': sort === 'type', 'sort-inactive': sort !== 'type' }" (click)="changeSort('type')">
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'type', 'sort-inactive': sort !== 'type' }" (click)="changeSort(filter, 'type')">
         <span>Tipo</span>
       </button>
     </mat-menu>
@@ -55,13 +55,13 @@
 
       <div mat-line class="c-sb items">
         <div>
-          Ingresos: x | {{ property?.nOutgoings }} &euro;
+          Ingresos: {{ property?.incomes?.nIncomes }} | {{  property?.incomes?.qIncomes }} &euro;
         </div>
         <div>
-          Gastos: x | {{ property?.nIncomes }} &euro;
+          Gastos: {{ property?.outgoings?.nOutgoings }} | {{ property?.outgoings?.qOutgoings }} &euro;
         </div>
         <div>
-          Pendientes: x | {{ property?.nPendingPayments }} &euro;
+          Pendientes: {{ property?.pending?.nPendingPayments }} | {{ property?.pending?.qPendingPayments }} &euro;
         </div>
       </div>
       
@@ -84,7 +84,6 @@
   </mat-list>
 
   <mat-paginator 
-    class="properties-paginator"
     [length]="properties?.length"
     [pageIndex]="page?.pageIndex"
     [pageSize]="page?.pageSize"

@@ -1,65 +1,86 @@
 <h2 mat-dialog-title>Añadir inquilino</h2>
 <mat-dialog-content>
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>Tipo</mat-label>
-      <mat-select required>
-        <mat-option>Particular</mat-option>
-        <mat-option>Empresa</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <form (ngSubmit)="onSubmit()" #tForm="ngForm">
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo</mat-label>
+        <mat-select [(ngModel)]="tenant.type" name="type" (selectionChange)="changeType($event.value)">
+          <mat-option value="private">Particular</mat-option>
+          <mat-option value="company">Empresa</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>NIF/CIF</mat-label>
-      <input matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Nombre</mat-label>
-      <input matInput />
-    </mat-form-field>
-  </div>
-  
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>Dirección</mat-label>
-      <input matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>País</mat-label>
-      <mat-select disabled required>
-        <mat-option>España</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-
-    <mat-form-field appearance="fill">
-      <mat-label>Ciudad</mat-label>
-      <mat-select disabled required>
-        <mat-option>Valencia</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div class="c-sb">
-    <mat-form-field appearance="fill">
-      <mat-label>Teléfono</mat-label>
-      <input matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>E-mail</mat-label>
-      <input matInput />
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>NIF/CIF</mat-label>
+        <input matInput [(ngModel)]="tenant.identity" name="identity" #identity="ngModel" required pattern="([a-z]|[A-Z]|[0-9])[0-9]{7}([a-z]|[A-Z]|[0-9])"/>
+        <mat-error *ngIf="identity?.errors && identity?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="identity?.errors && identity?.errors?.pattern">Documento no válido</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="tenant.name" name="name" #name="ngModel" required minlength="5" maxlength="40"/>
+        <mat-error *ngIf="name?.errors && name?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="name?.errors && name?.errors?.minlength || name?.errors?.maxlength">Nombre no válido</mat-error>
+      </mat-form-field>
+    </div>
     
-    <mat-form-field appearance="fill">
-      <mat-label>IBAN</mat-label>
-      <input matInput />
-    </mat-form-field>
-  </div>
+    <div *ngIf="tenant?.type === 'company'">
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Inquilino</mat-label>
+        <mat-select [(ngModel)]="tenant.tenantId" name="tenantId">
+          <mat-option *ngFor="let t of tenants" [value]="t.id">{{ t.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>País</mat-label>
+        <mat-select [(ngModel)]="tenant.country" name="country" disabled>
+          <mat-option value="españa">España</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección</mat-label>
+        <input matInput [(ngModel)]="tenant.address" name="address" #address="ngModel" required minlength="10" maxlength="50" />
+        <mat-error *ngIf="address?.errors && address?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="address?.errors && address?.errors?.minlength || address?.errors?.maxlength">Dirección no válida</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Código postal</mat-label>
+        <input matInput [(ngModel)]="tenant.cp" name="cp" #cp="ngModel" required minlength="5" maxlength="5" />
+        <mat-error *ngIf="cp?.errors && cp?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="cp?.errors && cp?.errors?.minlength || cp?.errors?.maxlength">Dirección no válida</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="c-sb">
+      <mat-form-field appearance="fill">
+        <mat-label>Teléfono</mat-label>
+        <input matInput [(ngModel)]="tenant.phone" name="phone" #phone="ngModel" required pattern="(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}" />
+        <mat-error *ngIf="phone?.errors && phone?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="phone?.errors && phone?.errors?.pattern">Teléfono no válido</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>E-mail</mat-label>
+        <input matInput [(ngModel)]="tenant.email" name="email" #email="ngModel" required email/>
+        <mat-error *ngIf="email?.errors && email?.errors?.required">Requerido</mat-error>
+        <mat-error *ngIf="email?.errors && email?.errors?.email">Email no válido</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>IBAN</mat-label>
+        <input matInput [(ngModel)]="tenant.iban" name="iban" #iban="ngModel" pattern="ES\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|ES\d{22}"/>
+        <mat-error *ngIf="iban?.errors && iban?.errors?.pattern">IBAN no válido</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+  <button mat-button [mat-dialog-close]="true" [disabled]="!tForm.form.valid || (tForm.form.valid && tenant.type === 'company' && !tenant.tenantId)" type="submit" (click)="onSubmit()"  cdkFocusInitial>Crear</button>
 </mat-dialog-actions>

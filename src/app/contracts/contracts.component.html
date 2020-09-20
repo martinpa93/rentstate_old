@@ -1,12 +1,21 @@
 <div class="content-outlet">
 
   <div class="c-c">
-    <button mat-icon-button color="primary">
+    <button mat-icon-button color="primary" (click)="openFilter()">
       <mat-icon>filter_list</mat-icon>
     </button>
-    <button mat-icon-button color="primary">
+    <button mat-icon-button color="primary" [matMenuTriggerFor]="menuOrder">
       <mat-icon>reorder</mat-icon>
     </button>
+
+    <mat-menu #menuOrder="matMenu">
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort(filter, 'active')">
+        <span>Activos</span>
+      </button>
+      <button mat-menu-item [ngClass]="{'sort-active': sort === 'type', 'sort-inactive': sort !== 'type' }" (click)="changeSort(filter, 'type')">
+        <span>Tipo</span>
+      </button>
+    </mat-menu>
   </div>
 
   <mat-divider></mat-divider>
@@ -40,10 +49,10 @@
 
       <div mat-line class="c-sb items">
         <div>
-          Ingresos: x | {{ contract?.nIncomes }}
+          Ingresos: {{ contract?.incomes?.nIncomes }} | {{ contract?.incomes?.qIncomes }}
         </div>
         <div>
-          Pendientes:  x | {{ contract?.nPendingPayments }}
+          Pendientes:  {{ contract?.pending?.nPendingPayments }} | {{ contract?.pending?.qPendingPayments }}
         </div>
       </div>
 
@@ -67,10 +76,11 @@
   </mat-list>
   
   <mat-paginator 
-  class="contracts-paginator"
-  [length]="100"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 25, 100]">
+    [length]="contracts?.length"
+    [pageIndex]="page?.pageIndex"
+    [pageSize]="page?.pageSize"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="changePage($event)">
   </mat-paginator>
 
 </div>

@@ -78,6 +78,34 @@ ipcMain.on('add-property', (event, arg) => {
   });
 });
 
+const tenants = require('./main/tenant');
+
+ipcMain.on('list-tenants', (event, args) => {
+  tenants.listTenants(knex, args).then((res) => {
+    event.sender.send('reply-list-tenants',res);
+  });
+});
+
+ipcMain.on('add-tenant', (event, arg) => {
+  tenants.addTenant(knex, arg).then((res) => {
+    event.sender.send('reply-add-tenant',res);
+  });
+});
+
+const contracts = require('./main/contract');
+
+ipcMain.on('list-contracts', (event, args) => {
+  contracts.listContracts(knex, args).then((res) => {
+    event.sender.send('reply-list-contracts',res);
+  });
+});
+
+ipcMain.on('add-contract', (event, arg) => {
+  contracts.addContract(knex, arg).then((res) => {
+    event.sender.send('reply-add-contract',res);
+  });
+});
+
 const files = require('./main/file');
 
 ipcMain.on('upload-files', (event, fls) => {

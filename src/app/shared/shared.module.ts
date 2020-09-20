@@ -19,6 +19,9 @@ import { getSpaPaginatorIntl } from './spa-paginator-intl';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatTableModule} from '@angular/material/table';
+import { FileSizePipe } from './file-size.pipe.';
 
 @NgModule({
   imports: [
@@ -41,7 +44,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatMenuModule,
     MatTabsModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatTableModule,
+  ],
+  declarations: [
+    FileSizePipe
   ],
   providers: [
     MatDatepickerModule,
@@ -66,7 +74,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatMenuModule,
     MatTabsModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatTableModule,
+    FileSizePipe
   ]
 })
 export class SharedModule { }

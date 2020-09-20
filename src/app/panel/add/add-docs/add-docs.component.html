@@ -2,30 +2,63 @@
 <mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Para:</mat-label>
-    <mat-select required>
-      <mat-option>Propiedad</mat-option>
-      <mat-option>Inquilino</mat-option>
-      <mat-option>Contrato</mat-option>
-      <mat-option>Ingreso</mat-option>
-      <mat-option>Gasto</mat-option>
+    <mat-select required [(ngModel)]="filesToUpload.typeRel" name="typeRel" (selectionChange)="changeTypeRel($event.value)">
+      <mat-option value="property">Propiedad</mat-option>
+      <mat-option value="tenant">Inquilino</mat-option>
+      <mat-option value="contract">Contrato</mat-option>
+      <mat-option value="income">Ingreso</mat-option>
+      <mat-option value="outgoing">Gasto</mat-option>
     </mat-select>
   </mat-form-field>
-    <mat-card>
-      <mat-card-content>
-        <div class="c-c">
-          <button mat-mini-fab color="primary" onclick="document.getElementById('addFile').click()">
-            <mat-icon>add</mat-icon>
-          </button>
-          <input type= "file" multiple=true id="addFile" (change)="changeFiles($event.target.files)">
-        </div>
-      </mat-card-content>
-    </mat-card>
-    <mat-list class="full-list">
-      <mat-list-item>
-      </mat-list-item>
-    </mat-list>
+
+  <mat-form-field appearance="fill" *ngIf="filesToUpload.typeRel">
+    <mat-label>Para:</mat-label>
+    <mat-select required [(ngModel)]="filesToUpload.relId" name="relId" *ngIf=" filesToUpload.typeRel === 'property'">
+      <mat-option *ngFor="let l of listRel" [value]="l.id">{{ l.address }}</mat-option>
+    </mat-select>
+    <mat-select required [(ngModel)]="filesToUpload.relId" name="relId" *ngIf=" filesToUpload.typeRel === 'tenant'">
+      <mat-option *ngFor="let l of listRel" [value]="l.id">{{ l.name }}</mat-option>
+    </mat-select>
+    <mat-select required [(ngModel)]="filesToUpload.relId" name="relId" *ngIf=" filesToUpload.typeRel === 'contract'">
+      <mat-option *ngFor="let l of listRel" [value]="l.id">{{ l.propertyId }} - {{ l.tenantId }} </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="c-c">
+        <button mat-mini-fab color="primary" onclick="document.getElementById('addFile').click()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <input type= "file" multiple=true id="addFile" (change)="changeFiles($event.target.files)">
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <table #table mat-table *ngIf="filesToUpload?.data" [dataSource]="filesToUpload.data">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="size">
+      <th mat-header-cell *matHeaderCellDef> Tamaño </th>
+      <td mat-cell *matCellDef="let element"> {{element.size | fileSize }} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
+  <button mat-button [disabled]="" [mat-dialog-close]="true" cdkFocusInitial>Crear</button>
 </mat-dialog-actions>

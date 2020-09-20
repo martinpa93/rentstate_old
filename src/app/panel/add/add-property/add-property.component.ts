@@ -10,7 +10,7 @@ import { PropertyService } from 'src/app/core/services/property.service';
 })
 export class AddPropertyComponent implements OnInit {
 
-  property: Property = {type: 'house', country: 'españa', region: 'valencia', city: 'valencia'};
+  property: Property = {type: 'house', country: 'españa'};
 
   constructor(
     private propertyS: PropertyService

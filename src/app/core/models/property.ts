@@ -5,13 +5,10 @@ export interface Property {
   type?: string;
   catastralReference?: string;
   country?: string;
-  region?: string;
-  city?: string;
   cp?: string;
   adquisitionValue?: number;
   adquisitionDate?: Date;
   avaliable?: boolean;
-  nContracts?: number;
   incomes?: {
     nIncomes?: number;
     qIncomes?: number;
@@ -24,6 +21,7 @@ export interface Property {
     nPendingPayments?: number;
     qPendingPayments?: number;
   };
+  nContracts?: number;
   nDocs?: number;
   nNotes?: number;
 }

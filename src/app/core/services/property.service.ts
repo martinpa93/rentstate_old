@@ -43,6 +43,4 @@ export class PropertyService {
       return property[0];
     }));
   }
-
-  filterData
 }

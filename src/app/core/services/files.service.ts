@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ElectronService } from './electron.service';
-import { map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,16 @@ export class FilesService {
     private electron: ElectronService
   ) {
     this.electron.ipcRenderer.on('reply-upload-files', (event, arg) => {
-      console.log(arg);
       this._uploadFiles.next(arg);
     });
   }
 
+  listFiles() {
+
+  }
+
   uploadFiles(files) {
     this.electron.ipcRenderer.send('upload-files', files);
-    return this.$uploadFiles;
+    return this.$uploadFiles.pipe(first());
   }
 }

@@ -1,4 +1,4 @@
-const listUsers = (knex) => {
+function listUsers(knex) {
   return knex.select().from('users');
 }
 
