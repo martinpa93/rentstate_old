@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
@@ -21,7 +21,11 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTableModule} from '@angular/material/table';
-import { FileSizePipe } from './file-size.pipe.';
+import { FileSizePipe } from './pipes/file-size.pipe.';
+import { OnlyNumber } from './directives/only-number.directive';
+import { NgxCurrencyModule } from "ngx-currency";
+import { customCurrencyMaskConfig } from './currency';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   imports: [
@@ -47,15 +51,19 @@ import { FileSizePipe } from './file-size.pipe.';
     MatProgressSpinnerModule,
     MatRadioModule,
     MatTableModule,
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    Ng5SliderModule
   ],
   declarations: [
-    FileSizePipe
+    FileSizePipe,
+    OnlyNumber
   ],
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,
     { provide: MatPaginatorIntl, useValue: getSpaPaginatorIntl()},
     {provide: MAT_DATE_LOCALE, useValue: 'es-SP'},
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' }
   ],
   exports: [
     FormsModule,
@@ -77,7 +85,11 @@ import { FileSizePipe } from './file-size.pipe.';
     MatProgressSpinnerModule,
     MatRadioModule,
     MatTableModule,
-    FileSizePipe
+    FileSizePipe,
+    OnlyNumber,
+    NgxCurrencyModule,
+    Ng5SliderModule,
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+ }

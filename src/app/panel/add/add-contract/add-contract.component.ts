@@ -45,14 +45,13 @@ export class AddContractComponent implements OnInit {
     });
     this.contract.start = null;
     this.contract.end = null;
-
   }
 
   onSubmit() {
     console.log(this.contract);
-  /*   this.contractS.addContract(this.contract, false).pipe(first()).subscribe((res) => {
+    this.contractS.addContract(this.contract, false).pipe(first()).subscribe((res) => {
       console.log(res);
-    }); */
+    });
   }
 
 }

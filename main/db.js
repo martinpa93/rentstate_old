@@ -141,6 +141,8 @@ async function up(knx) {
   }).then().catch((e) => {console.log(e)});
   await knex.schema.createTable('direct_debits', dd => {
     dd.increments();
+    dd.integer('userId');
+    dd.foreign('userId').references('id').inTable('users').onDelete('cascade');
     dd.date('date').notNullable();
   }).then().catch((e) => {console.log(e)});
   await knex.schema.createTable('contracts_dd', cdd => {

@@ -11,7 +11,7 @@
       
       <mat-form-field appearance="fill">
         <mat-label>Inquilino</mat-label>
-        <mat-select required [(ngModel)]="contract.tenant" name="tenant">
+        <mat-select required [(ngModel)]="contract.tenantId" name="tenant">
           <mat-option  *ngFor="let tenant of tenants" [value]="tenant.id">{{ tenant.name }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -19,7 +19,7 @@
 
     <div>
       <label>Selecciona la propiedad predominante</label>
-      <mat-radio-group [(ngModel)]="contract.propertyId" name="propertyId" ngDefaultControl>
+      <mat-radio-group [(ngModel)]="contract.propertyId" name="propertyId" ngDefaultControl required>
         <mat-radio-button *ngFor="let prop of contract?.properties" [value]="prop.id">
           {{ prop.address }}  <span style="font-weight: 500;">   RF: </span> {{ prop.catastralReference }}
         </mat-radio-button>

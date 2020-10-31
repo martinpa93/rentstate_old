@@ -8,7 +8,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class FilterTenantsComponent implements OnInit {
 
-  
   constructor(
     public dialogRef: MatDialogRef<FilterTenantsComponent>,
     @Inject(MAT_DIALOG_DATA) public data

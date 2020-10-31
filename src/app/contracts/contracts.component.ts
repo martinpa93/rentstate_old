@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Contract } from '../core/models/contract';
 import { Subscription } from 'rxjs';
-import { TenantService } from '../core/services/tenant.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../core/services/contract.service';
 import { FilterContractsComponent } from './filter-contracts/filter-contracts.component';
@@ -21,32 +20,38 @@ export class ContractsComponent implements OnInit {
     pageSize: 5
   };
   filter = {
-    name: null,
-    address: null, 
-    type: null
+    property: null,
+    tenant: null, 
+    start: null,
+    end: null
   };
   sort: string;
-  loadingR: boolean;
+  loadingC: boolean;
 
   constructor(
     private contractS: ContractService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private zone: NgZone
+    ) { }
 
   ngOnInit(): void {
-    this.loadingR = true;
+    this.loadingC = true;
     this.contractS.listContracts().subscribe((res: Contract[]) => {
-      this.contracts = res;
-      this.changeData();
-      this.loadingR = false;
-    });
-    this.subscription.add(this.contractS.addContract(null, true).subscribe((res) => {
-      this.loadingR = true;
-      this.contractS.listContracts(this.filter, this.sort).subscribe((res: Contract[]) => {
-        this.page.pageIndex = 0;
+      this.zone.run(() => {
         this.contracts = res;
         this.changeData();
-        this.loadingR = false;
+        this.loadingC = false;
+      });
+    });
+    this.subscription.add(this.contractS.addContract(null, true).subscribe((res) => {
+      this.loadingC = true;
+      this.contractS.listContracts(this.filter, this.sort).subscribe((res: Contract[]) => {
+        this.zone.run(() => {
+          this.page.pageIndex = 0;
+          this.contracts = res;
+          this.changeData();
+          this.loadingC = false;
+        });
       });
     }));
   }
@@ -66,7 +71,7 @@ export class ContractsComponent implements OnInit {
   }
 
   openFilter() {
-    const filter = { name: this.filter.name, address: this.filter.address, type: this.filter.type }
+    const filter = { ...this.filter };
     const dialogRef = this.dialog.open(FilterContractsComponent, { data: filter });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -12,16 +12,16 @@
 
       <mat-form-field appearance="fill">
         <mat-label>NIF/CIF</mat-label>
-        <input matInput [(ngModel)]="tenant.identity" name="identity" #identity="ngModel" required pattern="([a-z]|[A-Z]|[0-9])[0-9]{7}([a-z]|[A-Z]|[0-9])"/>
+        <input matInput [(ngModel)]="tenant.identity" name="identity" #identity="ngModel" required pattern="([a-z]|[A-Z]|[0-9])[0-9]{7}([a-z]|[A-Z]|[0-9])" minlength="8" maxlength="9"/>
         <mat-error *ngIf="identity?.errors && identity?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="identity?.errors && identity?.errors?.pattern">Documento no válido</mat-error>
+        <mat-error *ngIf="identity?.errors && (identity?.errors?.pattern || identity?.errors?.minlength || identity?.errors?.maxlength)">Documento no válido</mat-error>
       </mat-form-field>
       
       <mat-form-field appearance="fill">
         <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="tenant.name" name="name" #name="ngModel" required minlength="5" maxlength="40"/>
+        <input matInput [(ngModel)]="tenant.name" name="name" #name="ngModel" required minlength="5" maxlength="45"/>
         <mat-error *ngIf="name?.errors && name?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="name?.errors && name?.errors?.minlength || name?.errors?.maxlength">Nombre no válido</mat-error>
+        <mat-error *ngIf="name?.errors && (name?.errors?.minlength || name?.errors?.maxlength)">Nombre no válido</mat-error>
       </mat-form-field>
     </div>
     
@@ -46,12 +46,12 @@
         <mat-label>Dirección</mat-label>
         <input matInput [(ngModel)]="tenant.address" name="address" #address="ngModel" required minlength="10" maxlength="50" />
         <mat-error *ngIf="address?.errors && address?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="address?.errors && address?.errors?.minlength || address?.errors?.maxlength">Dirección no válida</mat-error>
+        <mat-error *ngIf="address?.errors && (address?.errors?.minlength || address?.errors?.maxlength)">Dirección no válida</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Código postal</mat-label>
-        <input matInput [(ngModel)]="tenant.cp" name="cp" #cp="ngModel" required minlength="5" maxlength="5" />
+        <input matInput OnlyNumber="true" [(ngModel)]="tenant.cp" name="cp" #cp="ngModel" required minlength="5" maxlength="5" />
         <mat-error *ngIf="cp?.errors && cp?.errors?.required">Requerido</mat-error>
         <mat-error *ngIf="cp?.errors && cp?.errors?.minlength || cp?.errors?.maxlength">Dirección no válida</mat-error>
       </mat-form-field>
@@ -60,16 +60,16 @@
     <div class="c-sb">
       <mat-form-field appearance="fill">
         <mat-label>Teléfono</mat-label>
-        <input matInput [(ngModel)]="tenant.phone" name="phone" #phone="ngModel" required pattern="(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}" />
+        <input matInput [(ngModel)]="tenant.phone" name="phone" #phone="ngModel" required pattern="(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}" minlength="9" maxlength="9"/>
         <mat-error *ngIf="phone?.errors && phone?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="phone?.errors && phone?.errors?.pattern">Teléfono no válido</mat-error>
+        <mat-error *ngIf="phone?.errors && (phone?.errors?.pattern || phone?.errors?.maxlength ||phone?.errors?.maxlength)">Teléfono no válido</mat-error>
       </mat-form-field>
       
       <mat-form-field appearance="fill">
         <mat-label>E-mail</mat-label>
-        <input matInput [(ngModel)]="tenant.email" name="email" #email="ngModel" required email/>
+        <input matInput [(ngModel)]="tenant.email" name="email" #email="ngModel" required email maxlength="45"/>
         <mat-error *ngIf="email?.errors && email?.errors?.required">Requerido</mat-error>
-        <mat-error *ngIf="email?.errors && email?.errors?.email">Email no válido</mat-error>
+        <mat-error *ngIf="email?.errors && (email?.errors?.email || email?.errors?.maxlength)">Email no válido</mat-error>
       </mat-form-field>
       
       <mat-form-field appearance="fill">

@@ -113,3 +113,18 @@ ipcMain.on('upload-files', (event, fls) => {
     event.sender.send('reply-upload-files',res);
   });
 });
+
+const notes = require('./main/note');
+
+ipcMain.on('list-notes', (event, args) => {
+  notes.listNotes(knex, args).then((res) => {
+    console.log(res);
+    event.sender.send('reply-list-notes',res);
+  });
+});
+
+ipcMain.on('add-note', (event, arg) => {
+  notes.addNote(knex, arg).then((res) => {
+    event.sender.send('reply-add-note',res);
+  });
+});

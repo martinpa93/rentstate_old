@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Tenant } from '../core/models/tenant';
 import { Subscription } from 'rxjs';
 import { TenantService } from '../core/services/tenant.service';
@@ -25,27 +25,32 @@ export class TenantsComponent implements OnInit, OnDestroy {
     type: null
   };
   sort: string;
-  loadingR: boolean;
+  loadingT: boolean;
 
   constructor(
     private tenantS: TenantService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private zone: NgZone
   ) { }
 
   ngOnInit(): void {
-    this.loadingR = true;
+    this.loadingT = true;
     this.tenantS.listTenants().subscribe((res: Tenant[]) => {
-      this.tenants = res;
-      this.changeData();
-      this.loadingR = false;
-    });
-    this.subscription.add(this.tenantS.addTenant(null, true).subscribe((res) => {
-      this.loadingR = true;
-      this.tenantS.listTenants(this.filter, this.sort).subscribe((res: Tenant[]) => {
-        this.page.pageIndex = 0;
+      this.zone.run(() => {
         this.tenants = res;
         this.changeData();
-        this.loadingR = false;
+        this.loadingT = false;
+      });
+    });
+    this.subscription.add(this.tenantS.addTenant(null, true).subscribe((res) => {
+      this.loadingT = true;
+      this.tenantS.listTenants(this.filter, this.sort).subscribe((res: Tenant[]) => {
+        this.zone.run(() => {
+          this.page.pageIndex = 0;
+          this.tenants = res;
+          this.changeData();
+          this.loadingT = false;
+        });
       });
     }));
   }

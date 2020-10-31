@@ -3,17 +3,25 @@
   <form (ngSubmit)="onSubmit()">
     <div class="c-col">
       <mat-form-field appearance="fill">
-        <mat-label>Propiedad/es</mat-label>
-        <mat-select required [(ngModel)]="data.property" name="property" [compareWith]="compareSelect">
-          <mat-option *ngFor="let property of properties" [value]="property">{{ property.address }}</mat-option>
+        <mat-label>Para</mat-label>
+        <mat-select [(ngModel)]="data.typeRel" name="typeRel">
+          <mat-option value="property">Propiedad</mat-option>
+          <mat-option value="tenant">Inquilino</mat-option>
+          <mat-option value="contract">Contrato</mat-option>
         </mat-select>
       </mat-form-field>
+
       <mat-form-field appearance="fill">
-        <mat-label>Inquilino/s</mat-label>
-        <mat-select required [(ngModel)]="data.tenant" name="tenant" [compareWith]="compareSelect">
-          <mat-option *ngFor="let tenant of tenants" [value]="tenant">{{ tenant.name }}</mat-option>
+        <mat-label>Para</mat-label>
+        <mat-select [(ngModel)]="data.relId" name="relId" #relId="ngModel">
+          <mat-optgroup *ngFor="let group of listRel" [label]="getLabel(group.group)">
+            <mat-option *ngFor="let item of group.rel" [value]="item.id">
+              {{ getValue(item, group.group) }}
+            </mat-option>
+          </mat-optgroup>
         </mat-select>
       </mat-form-field>
+
       <mat-form-field appearance="fill">
         <mat-label>Periodo del alquiler</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -23,7 +31,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
       </mat-form-field>
-      </div>
+    </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

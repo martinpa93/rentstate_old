@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Property } from '../core/models/property';
 import { PropertyService } from '../core/services/property.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterPropertiesComponent } from './filter-properties/filter-properties.component';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { ElectronService } from '../core/services/electron.service';
 
 @Component({
   selector: 'app-properties',
@@ -24,27 +25,33 @@ export class PropertiesComponent implements OnInit, OnDestroy {
     type: null
   };
   sort: string;
-  loadingR: boolean;
+  loadingP: boolean;
 
   constructor(
    private propertyS: PropertyService,
-   private dialog: MatDialog
+   private dialog: MatDialog,
+   private zone: NgZone
   ) { }
 
   ngOnInit(): void {
-    this.loadingR = true;
+    
+    this.loadingP = true;
     this.propertyS.listProperties().subscribe((res: Property[]) => {
-      this.properties = res;
-      this.changeData();
-      this.loadingR = false;
-    });
-    this.subscription.add(this.propertyS.addProperty(null, true).subscribe((res) => {
-      this.loadingR = true;
-      this.propertyS.listProperties(this.filter, this.sort).subscribe((res: Property[]) => {
-        this.page.pageIndex = 0;
+      this.zone.run(() => {
         this.properties = res;
         this.changeData();
-        this.loadingR = false;
+        this.loadingP = false;
+      });
+    });
+    this.subscription.add(this.propertyS.addProperty(null, true).subscribe((res) => {
+      this.loadingP = true;
+      this.propertyS.listProperties(this.filter, this.sort).subscribe((res: Property[]) => {
+        this.zone.run(() => {
+          this.page.pageIndex = 0;
+          this.properties = res;
+          this.changeData();
+          this.loadingP = false;
+        });
       });
     }));
   }

@@ -31,9 +31,10 @@
   <mat-divider></mat-divider>
 
   <mat-list class="full-list">
+    <mat-spinner *ngIf="loadingT" class="spinner-p"></mat-spinner>
     <div mat-subheader>Inquilinos</div>
 
-    <mat-list-item *ngFor="let tenant of tenants">
+    <mat-list-item *ngFor="let tenant of tenantsPage">
 
       <mat-icon *ngIf="tenant?.type === 'company'" mat-list-icon>business</mat-icon>
       <mat-icon *ngIf="tenant?.type === 'private'" mat-list-icon>person</mat-icon>

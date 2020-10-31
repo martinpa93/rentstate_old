@@ -4,9 +4,16 @@
     <button mat-icon-button color="primary" (click)="openFilter()">
       <mat-icon>filter_list</mat-icon>
     </button>
+    <mat-chip-list>
+      <mat-chip *ngIf="filter?.property" class="chip">{{ filter.property?.address }}</mat-chip>
+      <mat-chip *ngIf="filter?.tenant" class="chip">{{ filter.tenant?.name }}</mat-chip>
+      <mat-chip *ngIf="filter?.start && filter?.end" class="chip">{{ filter.start | date: 'dd/MM/yyyy' }} - {{ filter.end | date: 'dd/MM/yyyy' }}</mat-chip>
+    </mat-chip-list>
     <button mat-icon-button color="primary" [matMenuTriggerFor]="menuOrder">
       <mat-icon>reorder</mat-icon>
     </button>
+    <mat-chip *ngIf="sort === 'active'" class="chip">Activos</mat-chip>
+    <mat-chip *ngIf="sort === 'type'" class="chip">Tipo</mat-chip>
 
     <mat-menu #menuOrder="matMenu">
       <button mat-menu-item [ngClass]="{'sort-active': sort === 'active', 'sort-inactive': sort !== 'active'}" (click)="changeSort(filter, 'active')">
@@ -21,16 +28,16 @@
   <mat-divider></mat-divider>
 
   <mat-list class="full-list">
-    
+    <mat-spinner *ngIf="loadingC" class="spinner-p"></mat-spinner>
     <div mat-subheader>Contratos</div>
-    <mat-list-item *ngFor="let contract of contracts">
+    <mat-list-item *ngFor="let contract of contractsPage">
       
       <div mat-line class="c-sb">
-        <div class="date">{{ contract?.start }}</div>
+        <div class="date">{{ contract?.start | date: 'dd/MM/yyyy' }}</div>
         <div class="line"></div>
-        <div>9 meses</div>
+        <div>{{ contract?.duration }}</div>
         <div class="line"></div>
-        <div class="date">{{ contract?.end }} </div>
+        <div class="date">{{ contract?.end | date: 'dd/MM/yyyy'}} </div>
       </div>
 
       <div mat-line class="c-sb items">
@@ -71,7 +78,6 @@
       </div>
 
       <mat-divider></mat-divider>  
-
     </mat-list-item>
   </mat-list>
   

@@ -10,7 +10,7 @@ export interface Contract {
   propertyId?: number;
   properties?: Property[];
   directDebit?: boolean;
-  duration?: number;
+  duration?: string;
   tenant?: Tenant;
   nDocs?: number;
   nNotes?: number;
