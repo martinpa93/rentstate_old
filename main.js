@@ -95,7 +95,8 @@ ipcMain.on('add-tenant', (event, arg) => {
 const contracts = require('./main/contract');
 
 ipcMain.on('list-contracts', (event, args) => {
-  contracts.listContracts(knex, args).then((res) => {
+  contracts.listContracts(knex, args).then(async(res) => {
+    res = await contracts.fetchRels(knex, res);
     event.sender.send('reply-list-contracts',res);
   });
 });

@@ -41,8 +41,18 @@
       </div>
 
       <div mat-line class="c-sb items">
-        <div>Propiedades: </div>
-        <div>Inquilino: </div>
+        <div>
+          Propiedades: 
+          <div *ngFor="let p of contract.properties">
+            <div>{{ p.address }}</div>
+          </div>
+        </div>
+        <div>  
+          Inquilino: 
+          <div *ngFor="let t of contract.tenant">
+            <div>{{ t.name }}</div>
+          </div>
+        </div>
       </div>
 
       <div mat-line class="c-sb items">

@@ -32,7 +32,7 @@ export class ContractService {
     const data = {...filter, sort, userId: this.userS.get().id};
     this.electron.ipcRenderer.send('list-contracts', data);
     return this.$contracts.pipe(first(),map((contracts: Contract[]) => {
-      contracts.forEach((element) => {
+      contracts.map((element) => {
         element.duration = this.calculateDuration(element.start, element.end);
       });
       return contracts;

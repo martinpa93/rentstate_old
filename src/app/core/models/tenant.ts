@@ -21,6 +21,7 @@ export interface Tenant {
   }
   nContracts?: number;
   nDocs?: number;
+  nNotes?: number;
 }
 
 export interface TenantDoc {
