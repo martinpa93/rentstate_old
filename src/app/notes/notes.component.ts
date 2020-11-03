@@ -15,7 +15,6 @@ export class NotesComponent implements OnInit {
 
 notes: Note[] = notes;
 notesPage: Note[];
-selectedNote: Note;
 subscription: Subscription = new Subscription();
 page = {
   pageIndex: 0,
@@ -56,10 +55,6 @@ loadingN: boolean;
         });
       });
     }));
-  }
-
-  changeNote(note: Note) {
-    this.selectedNote = note;
   }
 
   changePage(event) {

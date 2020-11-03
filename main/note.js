@@ -1,17 +1,16 @@
 async function listNotes(knex, query) {
   let response = [];
 
-  const subqueryP = knex('properties').select('id').whereIn('userId', knex('users').select('id').where('id', query.userId));
-  const subqueryT = knex('tenants').select('id').whereIn('userId', knex('users').select('id').where('id', query.userId));
-  const subqueryC = knex('contracts').select('id').whereIn('userId', knex('users').select('id').where('id', query.userId));
+  const subqueryP = knex('properties as p').select('p.id').whereIn('p.userId', knex('users').select('id').where('id', query.userId));
+  const subqueryT = knex('tenants as t').select('t.id').whereIn('t.userId', knex('users').select('id').where('id', query.userId));
+  const subqueryC = knex('contracts as c').select('c.id').whereIn('c.userId', knex('users').select('id').where('id', query.userId));
 
-  const response1 = knex.select('*',  knex('properties').select('address as propertyAddress')).from('property_notes').whereIn('propertyId', subqueryP);
-  const response2 =  knex.select('*').from('tenant_notes').whereIn('tenantId', subqueryT);
-  const response3 = knex.select('*').from('contract_notes').whereIn('contractId', subqueryC);
+  const response1 = knex('property_notes as pn').select('pn.*').whereIn('pn.propertyId', subqueryP);
+  const response2 = knex('tenant_notes as tn').select('tn.id', 'tn.tenantId', 'tn.date', 'tn.title', 'tn.description', 'tn.type').whereIn('tn.tenantId', subqueryT);
+  const response3 = knex('contract_notes as cn').select('cn.id', 'cn.contractId', 'cn.date', 'cn.title', 'cn.description', 'cn.type').whereIn('cn.contractId', subqueryC);
   
   if (query) {
     if (query.typeRel) {
-      response = response.andWhere('type', '=', `${query.type}`)
     }
     if (query.type) {
     }
@@ -21,9 +20,7 @@ async function listNotes(knex, query) {
     }
   }
 
-  response.push(...await response1);
-  response.push(...await response2);
-  response.push(...await response3);
+  response.push(...await response1, ...await response2, ...await response3);
   return response;
 }
 
@@ -38,6 +35,7 @@ async function addNote(knex, data) {
 }
 
 exports.listNotes = listNotes;
+exports.fetchRelations = fetchRelations;
 exports.addNote = addNote;
 
 function chooseTable(typeRel) {
@@ -49,4 +47,23 @@ function chooseTable(typeRel) {
     case 'contract':
       return 'contract_notes';
   }
+}
+
+async function fetchRelations(knex, result) {
+  await Promise.all(result.map(async(el) => {
+    if (el.propertyId) {
+      el.rel = await knex('properties').first('address').where('id', el.propertyId);
+    } else if (el.tenantId) {
+      el.rel = await knex('tenants').first('name').where('id', el.tenantId);
+    } else if (el.contractId) {
+      const ct =  await knex('contracts as c').where('id', el.contractId);
+      el.rel = {
+        start: ct[0].start,
+        end: ct[0].end,
+        ...await knex('properties as p').first('p.address').where('p.id', ct[0].propertyId),
+        ...await knex('tenants as t').first('t.name').where('t.id', ct[0].tenantId),
+      }
+    }
+  }));
+  return result;
 }

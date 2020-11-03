@@ -26,6 +26,7 @@ import { OnlyNumber } from './directives/only-number.directive';
 import { NgxCurrencyModule } from "ngx-currency";
 import { customCurrencyMaskConfig } from './currency';
 import { Ng5SliderModule } from 'ng5-slider';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     MatRadioModule,
     MatTableModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    Ng5SliderModule
+    Ng5SliderModule,
+    MatExpansionModule
   ],
   declarations: [
     FileSizePipe,
@@ -89,6 +91,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     OnlyNumber,
     NgxCurrencyModule,
     Ng5SliderModule,
+    MatExpansionModule
   ]
 })
 export class SharedModule {

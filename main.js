@@ -118,8 +118,8 @@ ipcMain.on('upload-files', (event, fls) => {
 const notes = require('./main/note');
 
 ipcMain.on('list-notes', (event, args) => {
-  notes.listNotes(knex, args).then((res) => {
-    console.log(res);
+  notes.listNotes(knex, args).then(async(res) => {
+    res = await notes.fetchRelations(knex, res);
     event.sender.send('reply-list-notes',res);
   });
 });
